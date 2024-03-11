@@ -1,0 +1,39 @@
+#!/bin/bash
+
+
+main () 
+{
+	domain=$1
+        sub_domain=$2
+
+	if [ -z $2 ]; then
+		noSubDomain "$domain"
+	else
+		info "$sub_domain.$domain"
+	fi
+
+}
+
+info () 
+{
+	url=$1
+	result=$(dig "$url" | grep -A1 'ANSWER SECTION:' | awk  '{ print $4 " "  $5 }')
+	record=$(echo "$result" | awk '{print $1}' | tr -d '[:space:]')
+	ip=$(echo "$result" | awk '{print $2}' | tr -d '[:space:]')
+
+	echo "The subdomain $sub_domain is a $record record and points to $ip"
+}
+
+noSubDomain () 
+{
+	domain=$1
+	servers=("www" "web-01" "web-02" "lb-01")
+
+	for server in "${servers[@]}"
+	do
+		url="$server.$domain"
+		info "$url"
+	done
+}
+
+main "$1" "$2"
