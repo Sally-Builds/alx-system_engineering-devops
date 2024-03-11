@@ -9,7 +9,7 @@ main ()
 	if [ -z $2 ]; then
 		noSubDomain "$domain"
 	else
-		info "$sub_domain.$domain"
+		info "$sub_domain.$domain" "$sub_domain"
 	fi
 
 }
@@ -21,7 +21,7 @@ info ()
 	record=$(echo "$result" | awk '{print $1}' | tr -d '[:space:]')
 	ip=$(echo "$result" | awk '{print $2}' | tr -d '[:space:]')
 
-	echo "The subdomain $sub_domain is a $record record and points to $ip"
+	echo "The subdomain $2 is a $record record and points to $ip"
 }
 
 noSubDomain () 
@@ -32,7 +32,7 @@ noSubDomain ()
 	for server in "${servers[@]}"
 	do
 		url="$server.$domain"
-		info "$url"
+		info "$url" "$server"
 	done
 }
 
