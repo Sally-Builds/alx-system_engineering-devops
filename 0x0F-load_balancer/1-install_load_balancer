@@ -7,14 +7,14 @@ apt-get -y install haproxy=1.6.\*
 
 # Configure haproxy configuration file to distribute requests using a roundrobin algorithm
 echo '
-frontend Sally
+frontend http_frontend
         bind 0:80
         default_backend web_servers
 
 backend web_servers
         balance roundrobin
-        server 64820-web-01 54.173.165.199
-        server 64820-web-02 54.82.120.194
+        server 418161-web-01 34.232.70.82
+        server 418161-web-02 52.201.228.171
 ' >> /etc/haproxy/haproxy.cfg
 
 # Restart HAproxy service
