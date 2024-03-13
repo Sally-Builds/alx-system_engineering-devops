@@ -1,0 +1,20 @@
+frontend frontend_https
+        bind *:80
+        mode http
+        bind *:443 ssl crt /etc/haproxy/certs/www.sally-alx.tech.pem
+        redirect scheme https code 301 if !{ ssl_fc }
+	stats uri /haproxy?stats
+	timeout connect 5s  # Set connection timeout to 5 seconds 
+  	timeout client  1m  # Set client idle timeout to 1 minute
+  	timeout server 30s
+        default_backend sally_backend
+
+backend sally_backend
+	mode http
+        balance roundrobin
+        server 418161-web-01 34.232.70.82:80 
+        server 418161-web-02 52.201.228.171:80
+	timeout connect 5s  # Set connection timeout to 5 seconds 
+  	timeout client  2m  # Set client idle timeout to 2 minutes
+  	timeout server 60s
+
